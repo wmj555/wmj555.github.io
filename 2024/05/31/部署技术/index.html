@@ -1,0 +1,189 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><meta name="author" content="John Doe"><meta name="renderer" content="webkit"><meta name="copyright" content="John Doe"><meta name="keywords" content="Hexo"><meta name="description" content=""><meta name="Cache-Control" content="no-cache"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>部署技术 · Moneyed's Blog</title><link rel="stylesheet" href="/css/style.css?v=2018.7.9"><link rel="stylesheet" href="/css/animation.css?v=2018.7.9"><link rel="icon" href="/img/assets/favicon.ico"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css?version=1.5.6"><!-- scripts--><script>(function( w ){
+  "use strict";
+  // rel=preload support test
+  if( !w.loadCSS ){
+    w.loadCSS = function(){};
+  }
+  // define on the loadCSS obj
+  var rp = loadCSS.relpreload = {};
+  // rel=preload feature support test
+  // runs once and returns a function for compat purposes
+  rp.support = (function(){
+    var ret;
+    try {
+      ret = w.document.createElement( "link" ).relList.supports( "preload" );
+    } catch (e) {
+      ret = false;
+    }
+    return function(){
+      return ret;
+    };
+  })();
+
+  // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+  // then change that media back to its intended value on load
+  rp.bindMediaToggle = function( link ){
+    // remember existing media attr for ultimate state, or default to 'all'
+    var finalMedia = link.media || "all";
+
+    function enableStylesheet(){
+      link.media = finalMedia;
+    }
+
+    // bind load handlers to enable media
+    if( link.addEventListener ){
+      link.addEventListener( "load", enableStylesheet );
+    } else if( link.attachEvent ){
+      link.attachEvent( "onload", enableStylesheet );
+    }
+
+    // Set rel and non-applicable media type to start an async request
+    // note: timeout allows this to happen async to let rendering continue in IE
+    setTimeout(function(){
+      link.rel = "stylesheet";
+      link.media = "only x";
+    });
+    // also enable media after 3 seconds,
+    // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+    setTimeout( enableStylesheet, 3000 );
+  };
+
+  // loop through link elements in DOM
+  rp.poly = function(){
+    // double check this to prevent external calls from running
+    if( rp.support() ){
+      return;
+    }
+    var links = w.document.getElementsByTagName( "link" );
+    for( var i = 0; i < links.length; i++ ){
+      var link = links[ i ];
+      // qualify links to those with rel=preload and as=style attrs
+      if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+        // prevent rerunning on link
+        link.setAttribute( "data-loadcss", true );
+        // bind listeners to toggle media back
+        rp.bindMediaToggle( link );
+      }
+    }
+  };
+
+  // if unsupported, run the polyfill
+  if( !rp.support() ){
+    // run once at least
+    rp.poly();
+
+    // rerun poly on an interval until onload
+    var run = w.setInterval( rp.poly, 500 );
+    if( w.addEventListener ){
+      w.addEventListener( "load", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    } else if( w.attachEvent ){
+      w.attachEvent( "onload", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    }
+  }
+
+
+  // commonjs
+  if( typeof exports !== "undefined" ){
+    exports.loadCSS = loadCSS;
+  }
+  else {
+    w.loadCSS = loadCSS;
+  }
+}( typeof global !== "undefined" ? global : this ) );</script><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" defer></script><script src="/js/main.js?v=2018.7.9" defer></script><!-- fancybox--><link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script><!-- busuanzi--><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><meta name="generator" content="Hexo 7.2.0"></head><body><section class="profile-close" id="cxo-profile"><div class="profile-avatar"><i class="fa fa-caret-left"></i><img src="/img/assets/cat.png"></div><!--.profile-saying
+  i.fa.fa-comment
+  .saying--><div class="cxo-profile-inner"><div class="profile-name">moneyed</div><div class="profile-signature">for me</div><div class="friends"><div>FRIENDS</div><span><a href="//github.com/wmj555" target="_black">friendA</a></span><span><a href="//github.com/" target="_black">friendB</a></span><span><a href="//github.com/" target="_black">friendC</a></span></div><div class="read-progress"></div></div></section><header id="cxo-intro" style="height: 70vh;background-image: url(/img/intro/index-bg.png);"><nav id="cxo-intro-nav"><section><div class="intro-nav-title"><a href="/">Moneyed's Blog</a></div><div class="intro-nav-label-box"><a href="/">Home</a><a href="/about/">About</a><a href="/archives/">Archives</a><a href="/tags/">Tags</a></div><i class="fa fa-bars intro-nav-menu"><div class="intro-nav-drop"><a href="/">Home</a><a href="/about/">About</a><a href="/archives/">Archives</a><a href="/tags/">Tags</a></div></i><div class="clear"></div></section></nav><h1 class="post-title">部署技术</h1><div class="post-intros"><div class="post-intro-meta"><span class="post-intro-time"><i class="post-intro-calendar fa fa-calendar"></i><span>2024-05-31</span></span></div></div></header><article class="cxo-up" id="cxo-content-outer"><section id="cxo-content-inner"><article class="article-entry" id="post"><h1 id="部署MySQL"><a href="#部署MySQL" class="headerlink" title="部署MySQL"></a>部署MySQL</h1><ol>
+<li>不能设在root目录下</li>
+</ol>
+<h1 id="NC-Cloud-1811配置教程——详细讲解版"><a href="#NC-Cloud-1811配置教程——详细讲解版" class="headerlink" title="NC Cloud 1811配置教程——详细讲解版"></a>NC Cloud 1811配置教程——详细讲解版</h1><p>（本文档以 centos7+UAP 中间件+Oracle 11g+NC Cloud 安装部署过程为例）  </p>
+<h2 id="一-环境版本要求"><a href="#一-环境版本要求" class="headerlink" title="一 环境版本要求"></a>一 环境版本要求</h2><ol>
+<li>centos7 磁盘空间大于40G</li>
+<li>JDK 8</li>
+<li>Oracle 11G</li>
+</ol>
+<h2 id="二-流程"><a href="#二-流程" class="headerlink" title="二 流程"></a>二 流程</h2><h3 id="2-1-JDK安装"><a href="#2-1-JDK安装" class="headerlink" title="2.1 JDK安装"></a>2.1 JDK安装</h3><h5 id="1-安装准备——检查系统是否有原始JDK，并删除"><a href="#1-安装准备——检查系统是否有原始JDK，并删除" class="headerlink" title="1. 安装准备——检查系统是否有原始JDK，并删除"></a>1. 安装准备——检查系统是否有原始JDK，并删除</h5><p><strong>检查系统jdk版本</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure>
+<p><strong>检查jdk安装包</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -qa | grep java</span><br></pre></td></tr></table></figure>
+
+<p><code>rpm: 是一个强大的软件包管理器，用于构建、安装、查询、验证、更新和卸载单个软件包。每个软件包由文件的归档和用于安装和卸载这些归档文件的元数据组成。元数据包括辅助脚本、文件属性以及有关软件包的描述信息 -qa：表示查询所有已安装的软件包，-q表示查询模式，a表示查询已安装的软件包 |：管道，将前一个命令的输出作为后一个命令的输入 grep java：来筛选包含java的行</code><br><strong>如果有无关安装包，进行卸载</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -e --nodeps #这里输入要卸载的包#</span><br></pre></td></tr></table></figure>
+<p><code>-e：表示卸载模式 --nodeps：表示强制卸载不检查依赖项</code></p>
+<h5 id="链接下载安装"><a href="#链接下载安装" class="headerlink" title="链接下载安装"></a>链接下载安装</h5><p><strong>官网链接</strong>：<u><a target="_blank" rel="noopener" href="https://www.oracle.com/java/technologies/downloads/">https://www.oracle.com/java/technologies/downloads/</a></u><br>下载jdk-8u411-linux-x64.tar.gz 上传到虚拟机<br>一般是直接拖到虚拟机就好，这里选择根目录下yonyou文件夹，&#x2F;yonyou<br>如果拖动上传会显示上传错误，可以使用MobaXterm ssh连接虚拟机<br><strong>MobaXterm ssh连接教程</strong></p>
+<ol>
+<li>官网下载</li>
+<li>新建session，新建ssh</li>
+<li>在centos7 终端输入ifconfig，查看ip地址 </li>
+<li>在MobaXterm ssh窗口输入ip和用户名，进行连接，连接成功就可以选择文件上传啦<br><strong>解压文件</strong><br><img src="/1.png" alt="图片"> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf jdk-8u411-linux-x64.tar.gz</span><br></pre></td></tr></table></figure>
+<strong>配置环境变量！！–重要</strong><br>进入编辑模式<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile</span><br></pre></td></tr></table></figure>
+<code>/etc/profile 是一个系统范围的环境变量配置文件。它适用于所有使用 bash、ksh 或 sh shell 的用户。通常，它用于设置 PATH 变量、用户限制以及其他用户的配置。</code><br>打开文件后，输入i进入insert模式，进行编辑<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#set jdk</span><br><span class="line">JAVA_HOME=/yonyu/jdk/jdk1.8.0_221</span><br><span class="line">CLASSPATH=$JAVA_HOME/lib/tools.jar</span><br><span class="line">PATH=$JAVA_HOME/bin:$PATH</span><br><span class="line">export JAVA_HOME CLASSPATH PATH</span><br></pre></td></tr></table></figure></li>
+</ol>
+<p><code>JAVA_HOME：用来找到 JDK 的位置CLASSPATH=$JAVA_HOME/lib/tools.jar: 设置了 CLASSPATH 环境变量，它告诉 Java 应用程序在哪里查找类文件和库。  PATH: 将 JAVA_HOME/bin 目录添加到 PATH 环境变量中。PATH 环境变量定义了系统在执行命令时搜索可执行文件的目录。通过将 JDK 的 bin 目录添加到 PATH 中，可以直接在任何位置运行 Java 命令，如 java 或 javac，而无需指定完整路径 export : 最后这条命令使用 export 将 JAVA_HOME、CLASSPATH 和 PATH 环境变量导出，使其在当前 shell 以及由该 shell 启动的任何子进程中可用。 然后保存退出编辑模式，:wq 不保存退出 :q!  </code></p>
+<p>让配置生效 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source /etc/profile</span><br></pre></td></tr></table></figure>
+<p><strong>测试</strong><br>查看java版本</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">java -version</span><br></pre></td></tr></table></figure>
+<p>检查JAVA_HOME变量是否设置成功</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">echo $JAVA_HOME</span><br></pre></td></tr></table></figure>
+<p>如果设置成功，会显示JAVA_HOME路径<br><strong>jdk1.7升级到jdk1.8</strong><br>如果原始jdk不符合要求，下载jdk1.8后，直接修改环境变量保留旧安装包也可以 </p>
+<h3 id="2-2-Oracle安装及建表"><a href="#2-2-Oracle安装及建表" class="headerlink" title="2.2 Oracle安装及建表"></a>2.2 Oracle安装及建表</h3><h5 id="windows11-安装-Oracle-11g-版本"><a href="#windows11-安装-Oracle-11g-版本" class="headerlink" title="windows11 安装 Oracle 11g 版本"></a>windows11 安装 Oracle 11g 版本</h5><p><strong>1. 解压安装包</strong><br>新建一个database文件解压1和2到同一个database文件，再执行安装。<br><strong>2. 开始安装：双击 setup.exe</strong><br>如果出现如下问题，是版本注册的问题，默认Oracle 11没有添加win11的注册信息，所以要将win11的注册信息添加到Oracle的配置文件里<br><img src="en-resource://database/544:1" alt="6f33e4e48e26eaadcd8ffc7ffede2fec.png"><br>修改cvu_prereq.xml文件：点击打开”database\stage\cvu\cvu_prereq.xml”文件（用记事本或者其他工具打开）<br>复制以下内容 粘贴到 </CERTIFIED_SYSTEMS> 上方</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;OPERATING_SYSTEM RELEASE=&quot;6.2&quot;&gt;</span><br><span class="line">        &lt;VERSION VALUE=&quot;3&quot;/&gt;</span><br><span class="line">        &lt;ARCHITECTURE VALUE=&quot;64-bit&quot;/&gt;</span><br><span class="line">        &lt;NAME VALUE=&quot;Windows 11&quot;/&gt;</span><br><span class="line">        &lt;ENV_VAR_LIST&gt;</span><br><span class="line">            &lt;ENV_VAR NAME=&quot;PATH&quot; MAX_LENGTH=&quot;1023&quot; /&gt;</span><br><span class="line">        &lt;/ENV_VAR_LIST&gt;</span><br><span class="line">&lt;/OPERATING_SYSTEM&gt;</span><br></pre></td></tr></table></figure>
+<p> 双击 setup.exe ； 取消我希望通过 My Oracel Support 接收安全更新(W)。 一直点击下一步<br> 直到<br> <img src="en-resource://database/546:1" alt="3f28240f500d3658d8daff4f73df4900.png"><br> 设置文件位置和口令<br> <strong>一直下一步到安装完毕，弹出如下画面时，不要着急直接点确定， 点口令管理切记！！！一定要点击口令管理，进行口令设置，因为此时未点击口令管理而点击确定的话，后面各种坑。</strong> </p>
+<p> <img src="en-resource://database/548:1" alt="57015dc7938ec39917ba9b6a880e058c.png"><br>找到这几个用户名（SYS，SYSTEM，SCOTT，HR）并将锁定取消勾选，别忘了设置口令，我这里都设置成了123456<br><code>sys用户拥有dba,sysdba,sysoper等角色或权限，是oracle权限最高的用户。  system用户用于存放次一级的内部数据，如oracle的一些特性或工具的管理信息。system用户拥有普通dba角色权限。 scott是演示用户，是让我们学习Oracle的 hr用户是个示例用户，是在创建数据库时选中“示例数据库”后产生的，实际上就是模拟一个人力资源部的数据库。 OUTLN 用户是由 Oracle 自动创建的一个用户，它包含了许多 Oracle 自带的示例程序和包，这些代码旨在帮助用户更好地理解和掌握 Oracle 数据库。OUTLN 用户通常不应该进行修改，因为它的安装和升级与 Oracle 数据库系统的其他部分密切相关。</code><br><strong>测试</strong><br>在windows运行窗口中，输入sqlplus sys&#x2F;用户密码@dbname as sysdba,测试数据库是否配置成功，若显示 连接到：XXX，则配置成功</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sqlplus sys/123456@orcl as sysdba,</span><br></pre></td></tr></table></figure>
+<p><img src="en-resource://database/550:1" alt="412c5d7831f4ab3de623289a36c0f2bf.png"><br><strong>如果报错，则首先检查服务有没有启动</strong><br>在win面板搜索服务<br><img src="en-resource://database/552:1" alt="16340c03aab5aa043398b2336762ac9e.png"><br>进行手动启动<br><img src="en-resource://database/554:1" alt="fa4821736ec39a2bd2893d2c1ab1eadd.png"><br>启动成功 </p>
+<h4 id="创建表空间"><a href="#创建表空间" class="headerlink" title="创建表空间"></a>创建表空间</h4><p><strong>根据实际电脑配置来</strong></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">--根据现场实际的路径创建表空间</span><br><span class="line">CREATE TABLESPACE NNC_DATA01 DATAFILE &#x27;/oradata/FA/datafile/nnc_data01.dbf&#x27; SIZE 30960M AUTOEXTEND ON NEXT 50M EXTENT MANAGEMENT LOCAL UNIFORM SIZE 256K;</span><br><span class="line">CREATE TABLESPACE NNC_INDEX01 DATAFILE &#x27;D:\app\Administrator\oradata\sgnctrains\nnc_index01.dbf&#x27; SIZE 20480M AUTOEXTEND ON NEXT 100M EXTENT MANAGEMENT LOCAL UNIFORM SIZE 128K ;</span><br><span class="line"></span><br><span class="line">扩容表空间</span><br><span class="line">ALTER TABLESPACE NNC_DATA01 ADD DATAFILE &#x27;D:\app\Administrator\oradata\sgnctrains\nnc_data02.dbf&#x27; SIZE 30960M AUTOEXTEND ON NEXT 100M;</span><br><span class="line">ALTER TABLESPACE NNC_DATA01 ADD DATAFILE &#x27;D:\app\Administrator\oradata\sgnctrains\nnc_data03.dbf&#x27; SIZE 30960M AUTOEXTEND ON NEXT 100M;</span><br><span class="line"></span><br><span class="line">ALTER TABLESPACE NNC_INDEX01 ADD DATAFILE &#x27;D:\app\Administrator\oradata\sgnctrains\nnc_index02.dbf&#x27; SIZE 20480M AUTOEXTEND ON NEXT 200M;</span><br></pre></td></tr></table></figure>
+<h3 id="2-3-软件安装"><a href="#2-3-软件安装" class="headerlink" title="2.3 软件安装"></a>2.3 软件安装</h3><h5 id="1-NC-Cloud-安装盘目录结构"><a href="#1-NC-Cloud-安装盘目录结构" class="headerlink" title="1. NC Cloud 安装盘目录结构"></a>1. NC Cloud 安装盘目录结构</h5><p>yonyou_nc.zip上传到.&#x2F;yonyou文件目录后，使用tar进行解压</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">unzip  yonyou_nc.zip</span><br></pre></td></tr></table></figure>
+<p>得到yonyou_nc文件，进入目录，执行setup.sh文件 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./setup.sh</span><br></pre></td></tr></table></figure>
+<p>出现界面，一直到<br><img src="en-resource://database/556:1" alt="ffd088fd68dde2a47613933164f95150.png"><br>设置安装位置，本次设置在&#x2F;yonyou&#x2F;cloud文件下 </p>
+<h4 id="2-创建oracle用户"><a href="#2-创建oracle用户" class="headerlink" title="2. 创建oracle用户"></a>2. 创建oracle用户</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">SQL&gt; create user NCC_10 identified by 1 default tablespace nnc_data01 temporary tablespace temp;</span><br><span class="line">SQL&gt; grant dba,connect to NCC_10;</span><br></pre></td></tr></table></figure>
+<h5 id="3-配置-sysConfig"><a href="#3-配置-sysConfig" class="headerlink" title="3. 配置 sysConfig"></a>3. 配置 sysConfig</h5><p>安装完成后进入&#x2F;yonyou&#x2F;cloud&#x2F;bin 目录下运行 sysConfig.sh 进入系统配置界面<br>执行</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./sysConfig.sh</span><br></pre></td></tr></table></figure>
+<p><strong>错误1：</strong><br>提示sh权限不够，赋予sh文件777权限依旧不行<br><img src="en-resource://database/558:1" alt="3142bcf906e6eb05266439bd657edca4.png"><br>解决方法：给整个代码区都赋予777的权限</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">chmod  -R 755  cloud</span><br></pre></td></tr></table></figure>
+
+<p><strong>错误2</strong><br>没有找到JAVA_HOME<br>解决办法：是环境配置未生效，需要重新配置，确保echo JAVA_HOME可以看到路径</p>
+<p><strong>错误3</strong><br>jdk版本不对<br><img src="en-resource://database/560:1" alt="301980975528787fb1947e4cfff5cd8e.png"><br>解决办法：参考第一部分修改jdk版本<br><strong>错误4</strong><br>显示磁盘空间不足<br>解决方法：修改磁盘空间为100G，需要重配操作系统，所以最好一开始就设定的大一点 </p>
+<p><strong>服务启动后会显示如下界面</strong><br><img src="en-resource://database/562:1" alt="a55cb7865bc4d70af52f67aedb231d19.png"><br>在此处点击读取后需要配置ip信息，使用ifconfig读取后配置<br><strong>注意</strong><br>后边会出现配置后启动不起来的情况，把这里的ip再去掉，就可以运行<br>进行数据库连接配置<br><img src="en-resource://database/564:1" alt="0a45437265f38bfa395077b7140be474.png"><br>数据库类型选择Oracle 11G，填入数据库名字<br>此处的数据库地址 使用ipconfig查看win11 的ip地址，注意这个ip地址是随无线网变化的，所以整个操作最好保持在一个无线网内。<br>输入端口 一般默认是 1521<br><strong>注意</strong><br>这里的数据源标识 不是广义的数据源标识，是自己给服务起的名字，A1之类的，不用去数据库执行select语句查询<br>保存后测试成功就可<br><strong>错误</strong><br>无法TCP&#x2F;IP连接<br><img src="en-resource://database/568:1" alt="f8ec3c6e972aaf02049393e1587b8b05.png"><br>解决方法：</p>
+<ol>
+<li>检查网络情况 在centos7上ping主机，看是否能ping通 </li>
+<li>检查win11是否启动监听服务，去win11 的服务里手动启动 </li>
+<li>看主机是否开启了1521端口 </li>
+<li>检查防火墙，去win11 里修改防火墙的出站入站规则，允许1521端口开放</li>
+<li>检查监听服务配置<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsnrctl status</span><br></pre></td></tr></table></figure>
+<img src="en-resource://database/570:1" alt="1543a418c8eac01d7e80d029c0293f1d.png"></li>
+</ol>
+<p>只看到一个服务名”CLRExtProc”启动了，而我们想要的是ORCL服务名这是需要修改listener.ora 文件<br><img src="en-resource://database/572:1" alt="94670414e3cd57230ef9d451519f65fa.png"><br>再次检查监听服务配置，可以看到ORCL有了</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsnrctl status</span><br></pre></td></tr></table></figure>
+<p><img src="en-resource://database/574:1" alt="afed863ba7e488619ef0e32b65d31f62.png"> </p>
+<p>如果只看到 127.0.0.1:1521，表示只能本机连接 Oracle。你需要修改 listener.ora 文件以添加服务名（例如 ORCL）到监听配置中。<br>修改tnsname.ora的HOST为本地主机名</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">ORACLR_CONNECTION_DATA =</span><br><span class="line">  (DESCRIPTION =</span><br><span class="line">    (ADDRESS_LIST =</span><br><span class="line">      (ADDRESS = (PROTOCOL = IPC)(KEY = EXTPROC1521))</span><br><span class="line">    )</span><br><span class="line">    (CONNECT_DATA =</span><br><span class="line">      (SID = CLRExtProc)</span><br><span class="line">      (PRESENTATION = RO)</span><br><span class="line">    )</span><br><span class="line">  )</span><br><span class="line"> </span><br><span class="line">LISTENER_ORCL =</span><br><span class="line">  (ADDRESS = (PROTOCOL = TCP)(HOST = DESKTOP-NNDNCEI)(PORT = 1521))</span><br><span class="line"> </span><br><span class="line">ORCL =</span><br><span class="line">  (DESCRIPTION =</span><br><span class="line">    (ADDRESS_LIST =</span><br><span class="line">      (ADDRESS = (PROTOCOL = TCP)(HOST = DESKTOP-NNDNCEI)(PORT = 1521))</span><br><span class="line">    )</span><br><span class="line">    (CONNECT_DATA =</span><br><span class="line">      (SERVICE_NAME = ORCL)</span><br><span class="line">    )</span><br><span class="line">  )</span><br></pre></td></tr></table></figure>
+<p>重启监听服务 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">lsnrctl stop</span><br><span class="line">lsnrctl start</span><br></pre></td></tr></table></figure>
+<p>就可以解决tcp&#x2F;ip无法连接的问题了<br>接下来继续配置<br><img src="en-resource://database/576:1" alt="0d2b6abbe0002c3fdc2367385c4afad9.png"><br><img src="en-resource://database/578:1" alt="3e9c4d27a6e15a65dfbecfb5ec4020d2.png"><br><img src="en-resource://database/580:1" alt="0f437d36e0a225a55d3518d5db7a8a3b.png"><br>配置成功后，就返回cloud目录，进行startup的启动</p>
+<h5 id="4-执行startup-sh"><a href="#4-执行startup-sh" class="headerlink" title="4. 执行startup.sh"></a>4. 执行startup.sh</h5><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cd ..</span><br><span class="line">./startup.sh</span><br></pre></td></tr></table></figure>
+<p><img src="en-resource://database/592:1" alt="d7f49d8e49f6d6da94cf7ca5aeddc6db.png"></p>
+<p>看到 Server startup in XXms 即表示启动成功。那些异常直接忽略。<br><strong>未成功情况</strong><br><img src="en-resource://database/582:1" alt="0ac7c991461462a5018e2d546a02b5ac.png"><br><strong>解决方式：</strong></p>
+<ol>
+<li>配置虚拟机ip 服务器名称（server）对应关系<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/hosts </span><br></pre></td></tr></table></figure>
+使用ping 服务器名称来检测是否配置成功<br><img src="en-resource://database/584:1" alt="b7347b54791b782231d99a0908a4426d.png"> </li>
+<li>修改文件最大连接数 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ulimit -n 65536 </span><br></pre></td></tr></table></figure>
+需要写到环境变量里<br><strong>注意</strong><br>使用vi &#x2F;etc&#x2F;profile修改不生效<br>建议使用 .bashrc 文件文件配置<br> 检查<br> <img src="en-resource://database/588:1" alt="d9a6e57245dc322fec8c77b18c5615a4.png"></li>
+<li>启动后报错<br> <img src="en-resource://database/586:1" alt="fd57c7948d484bc9037a9988f9818a44.png"><br> 数据库是否连接成功<br> 查看是否初始化数据源<br> 文件最大连接数是否生效</li>
+</ol>
+<h3 id="2-4-NC-CloudUClient-下载及登录"><a href="#2-4-NC-CloudUClient-下载及登录" class="headerlink" title="2.4 NC CloudUClient 下载及登录"></a>2.4 NC CloudUClient 下载及登录</h3><h5 id="1-不要在centos7直接下客户端，很麻烦，建议在win下载"><a href="#1-不要在centos7直接下客户端，很麻烦，建议在win下载" class="headerlink" title="1. 不要在centos7直接下客户端，很麻烦，建议在win下载"></a>1. 不要在centos7直接下客户端，很麻烦，建议在win下载</h5><p>输入 <a target="_blank" rel="noopener" href="http://uclient.yonyou.com,下载相应版本的/">http://uclient.yonyou.com，下载相应版本的</a> UClient，运行文件安装即可<br><img src="en-resource://database/590:1" alt="ce450f4f870bc059688bf3bf4741fc52.png"> </p>
+<p>打开 UClient，添加应用，输入环境地址，点击搜索，搜索到 NC Cloud 后添加。<br>注意：端口号是去启动成功这个界面看，这里是80.<br><img src="en-resource://database/594:1" alt="dc2111cb4c68b49495e2ae675cfdc02b.png"><br><img src="en-resource://database/596:1" alt="8178ff186a492ad32a08906d03432f8b.png"><br>root 管理员登录<br>UClient 首页，右键点击 NC Cloud 应用，【以超级管理员运行】。<br>用户名 root，密码为空，点击登录后修改密码<br>登录后点击【系统管理】<br><img src="en-resource://database/600:1" alt="21888fa79a549cc6ef35e0fd07b83df1.png"><br>数据库初始化，<br>点击【增加】，填写图中相关信息，勾选基础后安装<br><img src="en-resource://database/598:1" alt="12e3aa18ab53dd5a85bac69d3a62fbd3.png"> </p>
+<h5 id="2-如果在centos下载客户端"><a href="#2-如果在centos下载客户端" class="headerlink" title="2. 如果在centos下载客户端"></a>2. 如果在centos下载客户端</h5><p>官网下载的是.deb文件，<br><code>deb包是Debian，Ubuntu等Linux发行版的软件安装包，扩展名为.deb，是类似于rpm的软件包，Debian，Ubuntu系统不推荐使用deb软件包，因为要解决软件包依赖问题，安装也比较麻烦</code><br>要执行安装的话，使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alien -r 软件名 generated</span><br></pre></td></tr></table></figure>
+<p>会出现依赖错误<br>将deb转存为rpm文件，并使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rpm -ivh --nodeps --force 文件名.rpm</span><br></pre></td></tr></table></figure>
+<p>强制安装，安装成功</p>
+</article><!-- lincense--><div class="license-wrapper"><p> <span>Author:  </span><a href="https://github.com/wmj555/wmj555.github.io">John Doe</a></p><p> <span>Link:  </span><a href="https://github.com/wmj555/wmj555.github.io/2024/05/31/%E9%83%A8%E7%BD%B2%E6%8A%80%E6%9C%AF/">https://github.com/wmj555/wmj555.github.io/2024/05/31/%E9%83%A8%E7%BD%B2%E6%8A%80%E6%9C%AF/</a></p><p> <span>Copyright:  </span><span>All articles in this blog are licensed under <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-nd/3.0">CC BY-NC-SA 3.0</a> unless stating additionally.</span></p></div><div class="post-paginator"><a class="prevSlogan" href="/2024/06/02/redis%E7%AC%94%E8%AE%B0/" title="redis笔记"><span>< PreviousPost</span><br><span class="prevTitle">redis笔记</span></a><a class="nextSlogan" href="/2024/05/29/%E9%9D%A2%E7%BB%8F/" title="面经"><span>NextPost ></span><br><span class="nextTitle">面经</span></a><div class="clear"></div></div><div id="comment"></div></section></article><footer id="cxo-footer-outer"><div id="cxo-footer-inner"><p class="footer-container"><span>Site by </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span> | theme </span><a href="https://github.com/Longlongyu/hexo-theme-Cxo"><span>Cxo</span></a></p><i class="fa fa-user"> </i><span id="busuanzi_value_site_uv"></span><span> | </span><i class="fa fa-eye"> </i><span id="busuanzi_value_site_pv"></span></div></footer><!-- catelog--><div class="toc-wrapper" style="top: 70vh;"><div class="toc-catalog"><i class="fa fa-list"> </i><span>CATALOG</span></div><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E9%83%A8%E7%BD%B2MySQL"><span class="toc-number">1.</span> <span class="toc-text">部署MySQL</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#NC-Cloud-1811%E9%85%8D%E7%BD%AE%E6%95%99%E7%A8%8B%E2%80%94%E2%80%94%E8%AF%A6%E7%BB%86%E8%AE%B2%E8%A7%A3%E7%89%88"><span class="toc-number">2.</span> <span class="toc-text">NC Cloud 1811配置教程——详细讲解版</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%80-%E7%8E%AF%E5%A2%83%E7%89%88%E6%9C%AC%E8%A6%81%E6%B1%82"><span class="toc-number">2.1.</span> <span class="toc-text">一 环境版本要求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8C-%E6%B5%81%E7%A8%8B"><span class="toc-number">2.2.</span> <span class="toc-text">二 流程</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-JDK%E5%AE%89%E8%A3%85"><span class="toc-number">2.2.1.</span> <span class="toc-text">2.1 JDK安装</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E5%AE%89%E8%A3%85%E5%87%86%E5%A4%87%E2%80%94%E2%80%94%E6%A3%80%E6%9F%A5%E7%B3%BB%E7%BB%9F%E6%98%AF%E5%90%A6%E6%9C%89%E5%8E%9F%E5%A7%8BJDK%EF%BC%8C%E5%B9%B6%E5%88%A0%E9%99%A4"><span class="toc-number">2.2.1.0.1.</span> <span class="toc-text">1. 安装准备——检查系统是否有原始JDK，并删除</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#%E9%93%BE%E6%8E%A5%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85"><span class="toc-number">2.2.1.0.2.</span> <span class="toc-text">链接下载安装</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-Oracle%E5%AE%89%E8%A3%85%E5%8F%8A%E5%BB%BA%E8%A1%A8"><span class="toc-number">2.2.2.</span> <span class="toc-text">2.2 Oracle安装及建表</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#windows11-%E5%AE%89%E8%A3%85-Oracle-11g-%E7%89%88%E6%9C%AC"><span class="toc-number">2.2.2.0.1.</span> <span class="toc-text">windows11 安装 Oracle 11g 版本</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#%E5%88%9B%E5%BB%BA%E8%A1%A8%E7%A9%BA%E9%97%B4"><span class="toc-number">2.2.2.1.</span> <span class="toc-text">创建表空间</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85"><span class="toc-number">2.2.3.</span> <span class="toc-text">2.3 软件安装</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-NC-Cloud-%E5%AE%89%E8%A3%85%E7%9B%98%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="toc-number">2.2.3.0.1.</span> <span class="toc-text">1. NC Cloud 安装盘目录结构</span></a></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-%E5%88%9B%E5%BB%BAoracle%E7%94%A8%E6%88%B7"><span class="toc-number">2.2.3.1.</span> <span class="toc-text">2. 创建oracle用户</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#3-%E9%85%8D%E7%BD%AE-sysConfig"><span class="toc-number">2.2.3.1.1.</span> <span class="toc-text">3. 配置 sysConfig</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#4-%E6%89%A7%E8%A1%8Cstartup-sh"><span class="toc-number">2.2.3.1.2.</span> <span class="toc-text">4. 执行startup.sh</span></a></li></ol></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-NC-CloudUClient-%E4%B8%8B%E8%BD%BD%E5%8F%8A%E7%99%BB%E5%BD%95"><span class="toc-number">2.2.4.</span> <span class="toc-text">2.4 NC CloudUClient 下载及登录</span></a><ol class="toc-child"><li class="toc-item toc-level-5"><a class="toc-link" href="#1-%E4%B8%8D%E8%A6%81%E5%9C%A8centos7%E7%9B%B4%E6%8E%A5%E4%B8%8B%E5%AE%A2%E6%88%B7%E7%AB%AF%EF%BC%8C%E5%BE%88%E9%BA%BB%E7%83%A6%EF%BC%8C%E5%BB%BA%E8%AE%AE%E5%9C%A8win%E4%B8%8B%E8%BD%BD"><span class="toc-number">2.2.4.0.1.</span> <span class="toc-text">1. 不要在centos7直接下客户端，很麻烦，建议在win下载</span></a></li><li class="toc-item toc-level-5"><a class="toc-link" href="#2-%E5%A6%82%E6%9E%9C%E5%9C%A8centos%E4%B8%8B%E8%BD%BD%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number">2.2.4.0.2.</span> <span class="toc-text">2. 如果在centos下载客户端</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></div><!-- top--><i class="fa fa-arrow-up close" id="go-up" aria-hidden="true"></i></body></html>
