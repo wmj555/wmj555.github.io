@@ -119,7 +119,7 @@
 <li>官网下载</li>
 <li>新建session，新建ssh</li>
 <li>在centos7 终端输入ifconfig，查看ip地址 </li>
-<li>在MobaXterm ssh窗口输入ip和用户名，进行连接，连接成功就可以选择文件上传啦<br><strong>解压文件</strong><br><img src="/1.png" alt="图片"> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf jdk-8u411-linux-x64.tar.gz</span><br></pre></td></tr></table></figure>
+<li>在MobaXterm ssh窗口输入ip和用户名，进行连接，连接成功就可以选择文件上传啦<br><strong>解压文件</strong><br><img src="/1.jpg"> <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tar zxvf jdk-8u411-linux-x64.tar.gz</span><br></pre></td></tr></table></figure>
 <strong>配置环境变量！！–重要</strong><br>进入编辑模式<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vi /etc/profile</span><br></pre></td></tr></table></figure>
 <code>/etc/profile 是一个系统范围的环境变量配置文件。它适用于所有使用 bash、ksh 或 sh shell 的用户。通常，它用于设置 PATH 变量、用户限制以及其他用户的配置。</code><br>打开文件后，输入i进入insert模式，进行编辑<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">#set jdk</span><br><span class="line">JAVA_HOME=/yonyu/jdk/jdk1.8.0_221</span><br><span class="line">CLASSPATH=$JAVA_HOME/lib/tools.jar</span><br><span class="line">PATH=$JAVA_HOME/bin:$PATH</span><br><span class="line">export JAVA_HOME CLASSPATH PATH</span><br></pre></td></tr></table></figure></li>
 </ol>
